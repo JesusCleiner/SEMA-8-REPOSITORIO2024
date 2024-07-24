@@ -1,31 +1,24 @@
 # Programación Tradicional
-# Ejemplo: Gestión de un vehículo
-
+# Ejemplo: Gestión de una tabla  de multiplicar
 # Definición de variables globales
-fuel_tank = 0
-mileage = 0
-fuel_efficiency = 25
 
-# Función para llenar el tanque de combustible
-def fill_tank(amount):
-    global fuel_tank
-    fuel_tank += amount
+def generar_tabla_multiplicar(numero, limite=10):
+    print(f"Tabla de multiplicar del {numero}:")
+    for i in range(1, limite + 1):
+        resultado = numero * i
+        print(f"{numero} x {i} = {resultado}")
 
-# Función para conducir el vehículo
-def drive(distance):
-    global fuel_tank, mileage, fuel_efficiency
-    fuel_needed = distance / fuel_efficiency
-    if fuel_needed <= fuel_tank:
-        fuel_tank -= fuel_needed
-        mileage += distance
-        print("Driving:", distance, "miles")
-    else:
-        print("Not enough fuel to drive that far.")
+def main():
+    while True:
+        try:
+            numero = int(input("Ingrese el número para generar su tabla de multiplicar: "))
+            limite = int(input("Ingrese el límite para la tabla de multiplicar (opcional, presione enter para usar 10): ") or 10)
+            generar_tabla_multiplicar(numero, limite)
+            continuar = input("¿Desea generar otra tabla? (s/n): ")
+            if continuar.lower() != 's':
+                break
+        except ValueError:
+            print("Por favor, ingrese un número válido.")
 
-# Uso de las funciones en la programación tradicional
-fill_tank(20)
-drive(100)
-
-# Imprimir la distancia recorrida y el nivel de combustible restante
-print("Mileage (Traditional):", mileage)
-print("Fuel Tank (Traditional):", fuel_tank)
+if __name__ == "__main__":
+    main()

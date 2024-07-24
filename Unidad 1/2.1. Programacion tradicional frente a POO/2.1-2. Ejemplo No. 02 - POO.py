@@ -1,31 +1,56 @@
 # Programación Orientada a Objetos (POO)
-# Ejemplo: Gestión de un vehículo
+# Ejemplo: Calculadora basica
 
-class Vehicle:
-    def __init__(self, fuel_efficiency=25):
-        self.fuel_tank = 0
-        self.mileage = 0
-        self.fuel_efficiency = fuel_efficiency
+class Calculadora:
+    def sumar(self, a, b):
+        return a + b
 
-    def fill_tank(self, amount):
-        self.fuel_tank += amount
+    def restar(self, a, b):
+        return a - b
 
-    def drive(self, distance):
-        fuel_needed = distance / self.fuel_efficiency
-        if fuel_needed <= self.fuel_tank:
-            self.fuel_tank -= fuel_needed
-            self.mileage += distance
-            print("Driving:", distance, "miles")
+    def multiplicar(self, a, b):
+        return a * b
+
+    def dividir(self, a, b):
+        if b != 0:
+            return a / b
         else:
-            print("Not enough fuel to drive that far.")
+            return "Error: División por cero"
 
-# Crear una instancia de la clase Vehicle
-car = Vehicle()
 
-# Uso de los métodos en la programación orientada a objetos
-car.fill_tank(20)
-car.drive(100)
+def menu():
+    print("Seleccione la operación:")
+    print("1. Sumar")
+    print("2. Restar")
+    print("3. Multiplicar")
+    print("4. Dividir")
+    print("5. Salir")
 
-# Imprimir la distancia recorrida y el nivel de combustible restante
-print("Mileage (OOP):", car.mileage)
-print("Fuel Tank (OOP):", car.fuel_tank)
+
+def main():
+    calculadora = Calculadora()
+
+    while True:
+        menu()
+        opcion = input("Ingrese su elección: ")
+
+        if opcion == '5':
+            break
+
+        num1 = float(input("Ingrese el primer número: "))
+        num2 = float(input("Ingrese el segundo número: "))
+
+        if opcion == '1':
+            print("Resultado:", calculadora.sumar(num1, num2))
+        elif opcion == '2':
+            print("Resultado:", calculadora.restar(num1, num2))
+        elif opcion == '3':
+            print("Resultado:", calculadora.multiplicar(num1, num2))
+        elif opcion == '4':
+            print("Resultado:", calculadora.dividir(num1, num2))
+        else:
+            print("Opción no válida")
+
+
+if __name__ == "__main__":
+    main()

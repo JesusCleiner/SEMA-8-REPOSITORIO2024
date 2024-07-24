@@ -1,24 +1,29 @@
 # Programación Orientada a Objetos (POO)
+# tabla  de multiplicar
 
-class ClimaSemana:
-    def __init__(self):
-        self.temperaturas = []
+class TablaMultiplicar:
+    def __init__(self, numero, limite=10):
+        self.numero = numero
+        self.limite = limite
 
-    def ingresar_temperaturas(self):
-        for dia in range(1, 8):
-            temp = float(input(f"Ingrese la temperatura del día {dia}: "))
-            self.temperaturas.append(temp)
+    def generar_tabla(self):
+        print(f"Tabla de multiplicar del {self.numero}:")
+        for i in range(1, self.limite + 1):
+            resultado = self.numero * i
+            print(f"{self.numero} x {i} = {resultado}")
 
-    def calcular_promedio_semanal(self):
-        promedio = sum(self.temperaturas) / len(self.temperaturas)
-        return round(promedio, 2)
+def main():
+    while True:
+        try:
+            numero = int(input("Ingrese el número para generar su tabla de multiplicar: "))
+            limite = int(input("Ingrese el límite para la tabla de multiplicar (opcional, presione enter para usar 10): ") or 10)
+            tabla = TablaMultiplicar(numero, limite)
+            tabla.generar_tabla()
+            continuar = input("¿Desea generar otra tabla? (s/n): ")
+            if continuar.lower() != 's':
+                break
+        except ValueError:
+            print("Por favor, ingrese un número válido.")
 
-# Creación de objeto
-clima_poo = ClimaSemana()
-
-# Entrada de datos
-clima_poo.ingresar_temperaturas()
-
-# Cálculo y salida
-promedio_poo = clima_poo.calcular_promedio_semanal()
-print(f"El promedio semanal de temperatura es: {promedio_poo}")
+if __name__ == "__main__":
+    main()

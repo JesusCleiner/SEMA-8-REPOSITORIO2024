@@ -1,102 +1,108 @@
-class Personaje:
+from abc import ABC, abstractmethod
 
-    def __init__(self, nombre, fuerza, inteligencia, defensa, vida):
-        self.nombre = nombre
-        self.fuerza = fuerza
-        self.inteligencia = inteligencia
-        self.defensa = defensa
-        self.vida = vida
+# Clase base abstracta
+class Vehiculo(ABC):
+    def __init__(self, marca, modelo, año):
+        self.marca = marca
+        self.modelo = modelo
+        self.año = año
 
-    def atributos(self):
-        print(self.nombre, ":", sep="")
-        print("·Fuerza:", self.fuerza)
-        print("·Inteligencia:", self.inteligencia)
-        print("·Defensa:", self.defensa)
-        print("·Vida:", self.vida)
+    @abstractmethod
+    def tipo_de_vehiculo(self):
+        pass
 
-    def subir_nivel(self, fuerza, inteligencia, defensa):
-        self.fuerza = self.fuerza + fuerza
-        self.inteligencia = self.inteligencia + inteligencia
-        self.defensa = self.defensa + defensa
+    def mostrar_info(self):
+        return f'Marca: {self.marca}, Modelo: {self.modelo}, Año: {self.año}'
 
-    def esta_vivo(self):
-        return self.vida > 0
+# Clase Auto que hereda de Vehiculo
+class Auto(Vehiculo):
+    def __init__(self, marca, modelo, año, puertas):
+        super().__init__(marca, modelo, año)
+        self.puertas = puertas
 
-    def morir(self):
-        self.vida = 0
-        print(self.nombre, "ha muerto")
+    def tipo_de_vehiculo(self):
+        return "Auto"
 
-    def daño(self, enemigo):
-        return self.fuerza - enemigo.defensa
+    def mostrar_info(self):
+        info = super().mostrar_info()
+        return f'{info}, Puertas: {self.puertas}'
 
-    def atacar(self, enemigo):
-        daño = self.daño(enemigo)
-        enemigo.vida = enemigo.vida - daño
-        print(self.nombre, "ha realizado", daño, "puntos de daño a", enemigo.nombre)
-        if enemigo.esta_vivo():
-            print("Vida de", enemigo.nombre, "es", enemigo.vida)
+# Clase Camion que hereda de Vehiculo
+class Camion(Vehiculo):
+    def __init__(self, marca, modelo, año, capacidad_carga):
+        super().__init__(marca, modelo, año)
+        self.capacidad_carga = capacidad_carga
+
+    def tipo_de_vehiculo(self):
+        return "Camión"
+
+    def mostrar_info(self):
+        info = super().mostrar_info()
+        return f'{info}, Capacidad de carga: {self.capacidad_carga} kg'
+
+# Clase Trailer que hereda de Vehiculo
+class Trailer(Vehiculo):
+    def __init__(self, marca, modelo, año, numero_ejes):
+        super().__init__(marca, modelo, año)
+        self.numero_ejes = numero_ejes
+
+    def tipo_de_vehiculo(self):
+        return "Trailer"
+
+    def mostrar_info(self):
+        info = super().mostrar_info()
+        return f'{info}, Número de ejes: {self.numero_ejes}'
+
+# Clase Moto que hereda de Vehiculo
+class Moto(Vehiculo):
+    def __init__(self, marca, modelo, año, tipo_moto):
+        super().__init__(marca, modelo, año)
+        self.tipo_moto = tipo_moto
+
+    def tipo_de_vehiculo(self):
+        return "Moto"
+
+    def mostrar_info(self):
+        info = super().mostrar_info()
+        return f'{info}, Tipo de moto: {self.tipo_moto}'
+
+# Función para mostrar el menú y obtener la elección del usuario
+def mostrar_menu():
+    print("==========================================")
+    print("Seleccione el tipo de vehículo:")
+    print("1. Auto")
+    print("2. Camión")
+    print("3. Trailer")
+    print("4. Moto")
+    print("===========================================")
+    return input("Ingrese el número de su elección: ")
+
+
+# Función principal
+def main():
+    # Crear instancias de cada clase
+    auto = Auto("Toyota", "Corolla", 2020, 4)
+    camion = Camion("Mercedes", "Actros", 2019, 18000)
+    trailer = Trailer("Volvo", "FH16", 2018, 3)
+    moto = Moto("Yamaha", "MT-07", 2021, "Deportiva")
+
+    # Lista de vehículos
+    vehiculos = [auto, camion, trailer, moto]
+
+    while True:
+        eleccion = mostrar_menu()
+
+        if eleccion in ['1', '2', '3', '4']:
+            vehiculo = vehiculos[int(eleccion) - 1]
+            print("\nInformación del Vehículo:")
+            print(vehiculo.mostrar_info())
+            print(f'Tipo de Vehículo: {vehiculo.tipo_de_vehiculo()}\n')
         else:
-            enemigo.morir()
+            print("Elección no válida. Intente de nuevo.")
 
+        continuar = input("¿Desea ver otro vehículo? (s/n): ")
+        if continuar.lower() != 's':
+            break
 
-class Guerrero(Personaje):
-
-    def __init__(self, nombre, fuerza, inteligencia, defensa, vida, espada):
-        super().__init__(nombre, fuerza, inteligencia, defensa, vida)
-        self.espada = espada
-
-    def cambiar_arma(self):
-        opcion = int(input("Elige un arma: (1) Acero Valyrio, daño 8. (2) Matadragones, daño 10"))
-        if opcion == 1:
-            self.espada = 8
-        elif opcion == 2:
-            self.espada = 10
-        else:
-            print("Número de arma incorrecta")
-
-    def atributos(self):
-        super().atributos()
-        print("·Espada:", self.espada)
-
-    def daño(self, enemigo):
-        return self.fuerza * self.espada - enemigo.defensa
-
-
-class Mago(Personaje):
-
-    def __init__(self, nombre, fuerza, inteligencia, defensa, vida, libro):
-        super().__init__(nombre, fuerza, inteligencia, defensa, vida)
-        self.libro = libro
-
-    def atributos(self):
-        super().atributos()
-        print("·Libro:", self.libro)
-
-    def daño(self, enemigo):
-        return self.inteligencia * self.libro - enemigo.defensa
-
-
-def combate(jugador_1, jugador_2):
-    turno = 0
-    while jugador_1.esta_vivo() and jugador_2.esta_vivo():
-        print("\nTurno", turno)
-        print(">>> Acción de ", jugador_1.nombre, ":", sep="")
-        jugador_1.atacar(jugador_2)
-        print(">>> Acción de ", jugador_2.nombre, ":", sep="")
-        jugador_2.atacar(jugador_1)
-        turno = turno + 1
-    if jugador_1.esta_vivo():
-        print("\nHa ganado", jugador_1.nombre)
-    elif jugador_2.esta_vivo():
-        print("\nHa ganado", jugador_2.nombre)
-    else:
-        print("\nEmpate")
-
-
-personaje_1 = Guerrero("Guts", 20, 10, 4, 100, 4)
-personaje_2 = Mago("Vanessa", 5, 15, 4, 100, 3)
-
-personaje_1.atributos()
-personaje_2.atributos()
-
-combate(personaje_1, personaje_2)
+if __name__ == "__main__":
+    main()
